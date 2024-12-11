@@ -36,7 +36,6 @@ public class AboutController(IAboutRepository aboutRepository) : Controller
         existingDescription.Content = description.Content;
 
         aboutRepository.UpdateDescription(existingDescription);
-        // context.Entry(existingDescription).State = EntityState.Modified;
 
         if (await aboutRepository.SaveChangesAsync())
         {
