@@ -1,0 +1,85 @@
+As usual, I have a few questions for you. To be completely honest, I don't have enough time to complete this task.
+So we need to do it as soon as possible and as good as possible. 
+
+1. Our login view seems to be working as expected, but how can my Angular application know who is authenticated now?
+For example, there is a snippet of task: "Also it has 'Add new Url' section, which is visible only to authorized users, where you can
+enter URL and convert it to a short representation, after that it should be added to the table automatically".
+I have corresponding methods, services and controllers, but how can I handle this "visible only"?
+
+2. We must have the About view, but we don't have it yet. This should contain a description of your Url Shortener algorithm. Visible for
+everyone(even not authorize) but can be edited only by admin users. Just an ordinary Razor page with submit action.
+
+But we need to have a good method for the algorithm. Now we have it and I neiher like it, nor understand. In my opinion,
+we should use hashing/cipher common algorithms.
+
+private string GenerateShortUrl(string originalUrl)
+    {
+        return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+            .Substring(0, 8)
+            .Replace("/", "_")
+            .Replace("+", "-");
+    }
+
+3. One more question about Short URL Info (Anonymous can't access this page): This page contains info about URL (CreatedBy, CreatedDate, any other fields).
+I'm sending a corresponding request here, but I need View, not ordinary json (as far as I understand)
+
+public deleteUrl(id: number): void {
+    this.urlService.deleteUrl(id).subscribe({
+      next: () => {
+        const updatedUrls = this.urlService.urls().filter(u => u.id !== id);
+        this.urlService.urls.set(updatedUrls);
+        // this.urlService.urls.update()
+      }
+    });
+  }
+
+  public getUrlDetails(id: number): void {
+    this.urlService.getUrlDetails(id).subscribe();
+  }
+
+
+4. Please help me write correct code using new Angular features (signals). Take a look:
+
+public deleteUrl(id: number): void {
+    this.urlService.deleteUrl(id).subscribe({
+      next: () => {
+        const updatedUrls = this.urlService.urls().filter(u => u.id !== id);
+        this.urlService.urls.set(updatedUrls);
+        // this.urlService.urls.update()
+      }
+    });
+  }
+
+public addUrl() {
+    const url = this.addUrlControl.value;
+    this.urlService.addUrl(url).subscribe({
+      next: newUrl => {
+        const updatedUrls = [...this.urlService.urls(), newUrl];
+        this.urlService.urls.set(updatedUrls)
+        // this.urlService.urls.update();
+      }
+    });
+  }
+
+
+Now I use the set method, but I'd like to use update(). Here is how it works: 
+
+(method) WritableSignal<Url[]>.update(updateFn: (value: Url[]) => Url[]): void
+
+5. My wwwroot folder is on the same level as Views, Models, Controllers and contains such directories: css, dist, js, lib
+
+6. Used to be
+
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "dist", "client", "browser")),
+    RequestPath = ""
+});
+
+app.MapFallbackToFile("index.html");
+
+1. Styles
+2. Reset input after adding link
+3. Logic of redirecting from short link to original one

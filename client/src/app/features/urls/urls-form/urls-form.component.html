@@ -1,0 +1,4 @@
+<section class="flex flex-col gap-1 p-4 bg-gray-100 rounded shadow-md">
+  <app-text-input [formControl]="addUrlControl" label="Original URL" />
+  <button mat-raised-button class="w-full" (click)="addUrl()" [disabled]="!addUrlControl.valid">Add</button>
+</section>

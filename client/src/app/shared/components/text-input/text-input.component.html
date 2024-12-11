@@ -1,0 +1,20 @@
+<div class="mb-1">
+  <mat-form-field appearance="fill" hideRequiredMarker class="w-full">
+    <mat-label>{{label()}}</mat-label>
+    <input
+      matInput
+      [formControl]="control"
+      [type]="type()"
+      [ngClass]="{
+        'border-red-500 focus:ring-red-500': control.touched && control.invalid,
+        'border-gray-300 focus:ring-primary': !(control.touched && control.invalid)
+      }"
+    />
+    <mat-error *ngIf="control.hasError('required')">
+      Please enter {{label() | lowercase}}
+    </mat-error>
+    <mat-error *ngIf="control.hasError('pattern')">
+      Please enter a valid url
+    </mat-error>
+  </mat-form-field>
+</div>

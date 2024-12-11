@@ -1,0 +1,29 @@
+@model UrlShortener.Models.Url
+
+@{
+    ViewData["Title"] = "Short URL Info";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="url-details">
+    <div>
+        <strong>Original URL:</strong>
+        <p><a href="@Model.OriginalUrl" target="_blank">@Model.OriginalUrl</a></p>
+    </div>
+
+    <div>
+        <strong>Short URL:</strong>
+        <p><a href="@Model.ShortUrl" target="_blank">@Model.ShortUrl</a></p>
+    </div>
+
+    <div>
+        <strong>Created At:</strong>
+        <p>@Model.CreatedAt.ToString("g")</p>
+    </div>
+
+    <div>
+        <strong>Created By:</strong>
+        <p>@Model.CreatedBy.UserName</p>
+    </div>
+</div>

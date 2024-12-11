@@ -1,0 +1,50 @@
+@model string
+
+@{
+    ViewData["Title"] = "About";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <strong>Description:</strong>
+    <p>@Model</p>
+</div>
+
+@if (User.IsInRole("Admin"))
+{
+    <form id="editForm">
+        <textarea id="newDescription" rows="4" style="width: 100%;">@Model</textarea><br>
+        <button type="button" class="btn btn-primary" onclick="updateDescription()">Save</button>
+    </form>
+}
+
+<script>
+    function updateDescription() {
+        const newDescription = document.getElementById('newDescription').value;
+
+        if (!newDescription || newDescription.trim() === "") {
+            alert("Description cannot be empty.");
+            return;
+        }
+
+        fetch('/About/Edit', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ Content: newDescription })
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                response.json().then(data => {
+                    alert(data.message || "Error updating description");
+                });
+            }
+        })
+        .catch(error => console.error('Error updating description:', error));
+    }
+</script>

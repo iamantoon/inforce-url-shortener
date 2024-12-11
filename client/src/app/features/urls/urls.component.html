@@ -1,0 +1,9 @@
+<div class="container p-5">
+  @if (authService.user()) {
+    <app-urls-form />
+  }
+  <app-urls-table />
+  @if (authService.user()?.isAdmin && areThereAnyLinks) {
+    <button mat-flat-button class="ml-auto mt-2" (click)="deleteAll()">Delete all urls</button>
+  }
+</div>

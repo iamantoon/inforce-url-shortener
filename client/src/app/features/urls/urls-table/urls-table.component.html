@@ -1,0 +1,38 @@
+@if (urlService.urls().length === 0) {
+  <p class="text-center text-2xl font-bold mt-3">Currently, there are no created (shortened) URLs</p>
+} @else {
+  <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden mt-2">
+    <thead class="bg-blue-500 text-white">
+      <tr>
+        <th class="py-2 px-4 text-left">Original URL</th>
+        <th class="py-2 px-4 text-left">Short URL</th>
+        @if (authService.user()) {
+          <th class="py-2 px-4 text-left">Actions</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (url of urlService.urls(); track url.id) {
+        <tr class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b w-1/2 truncate">
+            <a href="{{url.originalUrl}}" target="_blank" class="hover:underline to-blue-400 text-blue-500">{{url.originalUrl}}</a>
+          </td>
+          <td class="py-2 px-4 border-b w-1/4 truncate">
+            <a href="{{url.shortUrl}}" target="_blank" class="hover:underline to-blue-400 text-blue-500">{{url.shortUrl}}</a>
+          </td>
+
+          @if (authService.user()) { 
+            <td class="py-2 px-4 border-b w-1/4 truncate">
+              @if (authService.user()?.isAdmin || authService.user()?.userName === url.createdByUserName) {
+                <button mat-stroked-button (click)="deleteUrl(url.id)" class="mr-1">Delete</button>
+              }
+
+              <button mat-flat-button (click)="getUrlDetails(url.id)">Details</button>
+            </td>
+          }
+
+        </tr>
+      }
+    </tbody>
+  </table>
+}
