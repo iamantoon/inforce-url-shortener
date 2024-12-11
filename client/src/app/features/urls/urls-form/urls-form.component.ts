@@ -31,7 +31,7 @@ export class UrlsFormComponent {
         this.resetInput();
       },
       error: (error) => {
-        this.snackbar.error(error.message);
+        this.snackbar.error('This URL already exists');
       }
     });
   }
